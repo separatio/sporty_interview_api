@@ -1,31 +1,37 @@
-from seleniumbase import BaseCase
+from support.base_test_case import BaseTestCase
+from support.pages.home_page import HomePage
+from support.pages.page import Page
+from support.pages.search_results_page import SearchResultsPage
+from support.pages.streamer_page import StreamerPage
 import time
 
-BaseCase.main(__name__, __file__)
+
+BaseTestCase.main(__name__, __file__)
 
 
-class TestSimpleLogin(BaseCase):
+class TestSimpleLogin(BaseTestCase):
     def test_simple_login(self):
         self.open("https://twitch.tv")
 
         # Accept cookies
-        self.wait_for_element("button[data-a-target='consent-banner-accept']")
-        self.click("button[data-a-target='consent-banner-accept']")
+        self.wait_for_element_visible(Page.accept_cookies_button)
+        self.click(Page.accept_cookies_button)
 
-        self.click("[aria-label='Search']")
+        self.click(HomePage.search_button)
+        self.wait_for_element_visible(HomePage.search_input)
+        self.type(HomePage.search_input, "Starcraft II")
 
-        search_input_locator = "[placeholder='Search...']"
-        self.wait_for_element(search_input_locator)
-        self.type(search_input_locator, "Starcraft II")
-
-        self.click("[title='StarCraft II']")
+        self.click(Page.get_locator_by_title(topic="StarCraft II"))
         self.assert_text_visible("Follow")
 
-        # Below this is still not working; need to fix
+        # Scroll down twice
         self.scroll_to_bottom()
-        self.scroll_to_bottom()
+        self.wait_for_ready_state_complete()
 
-        streamer_elements = self.find_visible_elements("article")
+        self.scroll_to_bottom()
+        self.wait_for_ready_state_complete()
+
+        streamer_elements = self.find_visible_elements(SearchResultsPage.results)
         streamer_elements[2].click()
         # In case an alert is shown, dismiss it
         # Does not work for modals
@@ -37,5 +43,5 @@ class TestSimpleLogin(BaseCase):
         # self.click("button[data-a-target='modal-close-button']")
 
         streamer_url = str(time.time())
-        self.assert_element_visible("[data-a-target='follow-button']")
+        self.assert_element_visible(StreamerPage.follow_button)
         self.save_screenshot(name=streamer_url, folder="./screenshots")
