@@ -1,47 +1,38 @@
-from support.base_test_case import BaseTestCase
-from support.pages.home_page import HomePage
-from support.pages.page import Page
-from support.pages.search_results_page import SearchResultsPage
-from support.pages.streamer_page import StreamerPage
-import time
+import requests
+import pytest
+
+# Define base URL
+url = "https://cat-fact.herokuapp.com"
 
 
-BaseTestCase.main(__name__, __file__)
+# Test function for valid requests
+@pytest.mark.parametrize(
+    "test_input",
+    [{"animal_type": "cat", "amount": "1"}, {"animal_type": "cat", "amount": "500"}],
+)
+def test_cat_app_valid(test_input):
+    response = requests.get(f"{url}/facts/random", params=test_input)
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json; charset=utf-8"
+    # Additional assertions can be added here based on the expected response
 
 
-class TestSimpleLogin(BaseTestCase):
-    def test_simple_login(self):
-        self.open("https://twitch.tv")
+@pytest.mark.parametrize("test_input", [{"animal_type": "cat", "amount": "501"}])
+def test_cat_app_high_boundary(test_input):
+    response = requests.get(f"{url}/facts/random", params=test_input)
 
-        # Accept cookies
-        self.wait_for_element_visible(Page.accept_cookies_button)
-        self.click(Page.accept_cookies_button)
+    assert response.message == "Limited to 500 facts at a time"
+    assert response.status_code != 200
 
-        self.click(HomePage.search_button)
-        self.wait_for_element_visible(HomePage.search_input)
-        self.type(HomePage.search_input, "Starcraft II")
 
-        self.click(Page.get_locator_by_title(topic="StarCraft II"))
-        self.assert_text_visible("Follow")
+@pytest.mark.parametrize(
+    "test_input",
+    [
+        {"animal_type": "cat", "amount": "0"},
+    ],
+)
+def test_cat_app_low_boundary(test_input):
+    response = requests.get(f"{url}/facts/random", params=test_input)
 
-        # Scroll down twice
-        self.scroll_to_bottom()
-        self.wait_for_ready_state_complete()
-
-        self.scroll_to_bottom()
-        self.wait_for_ready_state_complete()
-
-        streamer_elements = self.find_visible_elements(SearchResultsPage.results)
-        streamer_elements[2].click()
-        # In case an alert is shown, dismiss it
-        # Does not work for modals
-        # self.dismiss_alert()
-
-        # In case a modal pops up, close it
-        # The locator is not correct most likely
-        # Assuming that the close button has the same kind of locator
-        # self.click("button[data-a-target='modal-close-button']")
-
-        streamer_url = str(time.time())
-        self.assert_element_visible(StreamerPage.follow_button)
-        self.save_screenshot(name=streamer_url, folder="./screenshots")
+    assert response.status_code == 200
+    assert response.json() == []
