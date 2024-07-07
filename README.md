@@ -11,11 +11,12 @@ All instructions below assume a working Python3 environment with pip installed. 
 2. Activate the virtual environment by running `source venv/bin/activate`
 3. Install required packages by running `pip install -r requirements.txt`
 
-# Docker
+# Running the tests
 
-To use the dockerized version build and run the image:
+After following the Setup step above, just run
 
 ```bash
-docker build . -t sporty_interview
-docker run -it sporty_interview
+pytest
 ```
+
+This will detect the test and run it.
