@@ -1,6 +1,6 @@
 # Introduction
 
-This is a test framework using pytest and SeleniumBase.
+This is an API test framework using pytest.
 The version of Python used is 3.10.
 
 # Setup
@@ -10,14 +10,6 @@ All instructions below assume a working Python3 environment with pip installed. 
 1. Create the virtual environment by running `python -m venv venv`
 2. Activate the virtual environment by running `source venv/bin/activate`
 3. Install required packages by running `pip install -r requirements.txt`
-
-# Running
-
-Use the following command to run the test:
-
-```bash
-pytest tests/first_test.py --mobile --headed --demo --uc
-```
 
 # Docker
 

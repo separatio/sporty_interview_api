@@ -1,3 +1,2 @@
-seleniumbase
 pip-tools
 pre-commit
