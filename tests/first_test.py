@@ -14,15 +14,15 @@ def test_cat_app_valid(test_input):
     response = requests.get(f"{url}/facts/random", params=test_input)
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json; charset=utf-8"
-    # Additional assertions can be added here based on the expected response
 
 
 @pytest.mark.parametrize("test_input", [{"animal_type": "cat", "amount": "501"}])
 def test_cat_app_high_boundary(test_input):
     response = requests.get(f"{url}/facts/random", params=test_input)
 
-    assert response.message == "Limited to 500 facts at a time"
-    assert response.status_code != 200
+    response_json = response.json()
+    assert response_json["message"] == "Limited to 500 facts at a time"
+    assert response.status_code == 405
 
 
 @pytest.mark.parametrize(
