@@ -1,6 +1,7 @@
 from seleniumbase import BaseCase
-BaseCase.main(__name__, __file__)
 import time
+BaseCase.main(__name__, __file__)
+
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
