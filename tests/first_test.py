@@ -25,12 +25,7 @@ def test_cat_app_high_boundary(test_input):
     assert response.status_code == 405
 
 
-@pytest.mark.parametrize(
-    "test_input",
-    [
-        {"animal_type": "cat", "amount": "0"},
-    ],
-)
+@pytest.mark.parametrize("test_input", [{"animal_type": "cat", "amount": "0"}])
 def test_cat_app_low_boundary(test_input):
     response = requests.get(f"{url}/facts/random", params=test_input)
 

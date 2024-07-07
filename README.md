@@ -20,3 +20,29 @@ pytest
 ```
 
 This will detect the test and run it.
+
+# Test cases
+
+| Test Case              | Animal Type | Amount |
+| ---------------------- | ----------- | ------ |
+| Minimum facts amount   | cat         | 1      |
+| Maximum facts amount   | cat         | 500    |
+| Boundary above maximum | cat         | 501    |
+| Boundary below minimum | cat         | 0      |
+
+# Validation
+
+I used simple assertions on the responses.
+For this exercise, overcomplicating was not worth the time.
+
+I considered adding expected results in the parametrized function as well.
+Example:
+
+```python
+@pytest.mark.parametrize("test_input,expected", [("3+5", 8), ("2+4", 6), ("6*9", 42)])
+```
+
+# CI
+
+A Github Action was implemented and can be run from the Actions tab in Github.
+It will run the current test.
