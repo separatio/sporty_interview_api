@@ -144,3 +144,8 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
+
+downloaded_files/
+latest_logs/
+screenshots/*
+!screenshots/.keep
