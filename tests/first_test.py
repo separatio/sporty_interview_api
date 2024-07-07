@@ -1,12 +1,13 @@
 from seleniumbase import BaseCase
 import time
+
 BaseCase.main(__name__, __file__)
 
 
 class TestSimpleLogin(BaseCase):
     def test_simple_login(self):
         self.open("https://twitch.tv")
-        # self.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+
         # Accept cookies
         self.wait_for_element("button[data-a-target='consent-banner-accept']")
         self.click("button[data-a-target='consent-banner-accept']")
