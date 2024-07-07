@@ -18,3 +18,12 @@ Use the following command to run the test:
 ```bash
 pytest tests/first_test.py --mobile --headed --demo --uc
 ```
+
+# Docker
+
+To use the dockerized version build and run the image:
+
+```bash
+docker build . -t sporty_interview
+docker run -it sporty_interview
+```
